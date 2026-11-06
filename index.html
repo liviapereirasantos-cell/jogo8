@@ -1,1 +1,1015 @@
+Pular para o conteúdo principal
+Ctrl+J
 
+Criar um bot
+
+
+
+Fireboy & Watergirl Friv Style Game
+Grok
+
+Trabalhou por 3s
+Beleza, vamos mudar completamente.
+
+Me fala o que você quer que vire:
+
+Opções rápidas:
+Tema novo (ex: vulcão, floresta, espaço, doces, cyberpunk, castelo sombrio…)
+Objetivo novo (ex: um salva o outro, timer, chefes, coletar chaves, etc.)
+Estilo diferente (mais difícil, mais fácil, com inimigos que atacam, power-ups, etc.)
+Tudo novo de verdade — personagens diferentes, mecânicas diferentes, visual diferente
+Pode falar tipo:
+
+“Muda pra um jogo de espaço com naves”
+“Faz um estilo mais dark e difícil”
+“Troca os personagens e coloca poderes”
+Ou descreve exatamente o que imagina
+Quanto mais detalhe você der, mais completo eu faço a mudança.
+
+Você
+Muda pra um jogo de espaço com naves
+
+Grok
+
+Trabalhou por 3m 6s
+Pronto! O jogo foi mudado completamente.
+
+🚀 Naves do Espaço
+Agora é um jogo de naves cooperativo no espaço:
+
+Nave Controles
+Nave 1 (laranja) WASD mover · Espaço atirar
+Nave 2 (azul) Setas mover · Enter atirar
+O que tem no jogo
+12 fases cada vez mais difíceis
+Inimigos alienígenas que atiram
+Asteroides
+Power-ups (tiro triplo e vida extra)
+Sistema de vidas e pontuação
+Visual de espaço com estrelas e nebulosas
+Objetivo: destruir todos os inimigos da fase para avançar.
+
+Arquivo:
+
+
+Abre no navegador e joga!
+
+Você
+aruuma, deixa p passar as fases por niveis ao inves de ganhar as 12 primeiras sem fazer nada
+
+Grok
+
+Trabalhou por 1m 58s
+Pronto! Corrigi a progressão das fases.
+
+O que estava errado
+Os inimigos saíam da tela e a fase avançava sozinha, sem você precisar matar ninguém.
+
+O que mudou
+Agora só passa de fase quando você elimina de verdade todos os inimigos daquela fase
+Contador na tela: Eliminados: X / Y
+Se um inimigo sair da tela sem ser destruído, outro nasce no lugar
+Não dá mais para “ganhar” as fases sem jogar
+Arquivo atualizado:
+
+
+Atualiza a página (Ctrl+F5) e testa — agora precisa limpar os inimigos para avançar.
+
+Você
+Agora adiciona power-ups, itens e vida
+
+Grok
+
+Trabalhou por 2m 29s
+Pronto! Adicionei vários power-ups, itens e melhorei o sistema de vida.
+
+Novos itens (caem dos inimigos)
+Item Efeito
+🔥 Tiro Triplo Atira 3 tiros (e tiro forte se estiver com power alto)
+❤️ Vida +1 vida (máx 5). Se estiver cheio, ganha pontos
+🛡️ Escudo Protege de 1 hit (inimigo, asteroide ou tiro)
+⚡ Velocidade Nave fica bem mais rápida por um tempo
+💣 Bomba Destrói todos os inimigos e asteroides da tela
+Outras melhorias
+Contador de buffs ativos na UI (🔥🛡️⚡)
+Escudo aparece como círculo azul na nave
+Tiro triplo com ângulo
+Chance de drop aumentada (25%)
+Vida máxima = 5
+Arquivo:
+
+
+Atualiza a página (Ctrl+F5) e testa os novos itens!
+
+Você
+deixa mais elaborado esse jogo
+
+Alta Demanda
+Grok está sob alto uso agora. Por favor, tente novamente mais tarde ou atualize seu plano para obter prioridade de
+acesso
+
+
+
+
+fogo-e-agua.html
+
+
+
+Pesquisa
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Naves do Espaço</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #02010a;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            color: #e0f2fe;
+            overflow: hidden;
+        }
+
+        h1 {
+            font-size: 1.9rem;
+            margin-bottom: 6px;
+            background: linear-gradient(90deg, #f97316, #a855f7, #38bdf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 16px rgba(168, 85, 247, 0.5));
+        }
+
+        #ui {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 8px;
+            font-size: 0.92rem;
+            font-weight: 600;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        #ui span {
+            background: #0f0a1e;
+            padding: 6px 14px;
+            border-radius: 10px;
+            border: 1px solid #2e1065;
+        }
+
+        #ui .p1 {
+            border-color: #f97316;
+            color: #fdba74;
+            box-shadow: 0 0 12px rgba(249, 115, 22, 0.3);
+        }
+
+        #ui .p2 {
+            border-color: #38bdf8;
+            color: #7dd3fc;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.3);
+        }
+
+        #ui .fase {
+            border-color: #a855f7;
+            color: #d8b4fe;
+        }
+
+        canvas {
+            border: 3px solid #7c3aed;
+            border-radius: 12px;
+            box-shadow: 0 0 60px rgba(124, 58, 237, 0.4);
+            background: #02010a;
+            max-width: 100%;
+            cursor: none;
+        }
+
+        #msg {
+            margin-top: 8px;
+            min-height: 24px;
+            font-size: 1.1rem;
+            color: #c4b5fd;
+            text-align: center;
+            text-shadow: 0 0 12px rgba(196, 181, 253, 0.6);
+        }
+
+        #controles {
+            margin-top: 6px;
+            font-size: 0.85rem;
+            color: #94a3b8;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .btn {
+            margin-top: 14px;
+            padding: 12px 36px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #7c3aed, #a855f7);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: transform 0.15s, box-shadow 0.15s;
+            box-shadow: 0 4px 24px rgba(124, 58, 237, 0.45);
+        }
+
+        .btn:hover {
+            transform: scale(1.06);
+            box-shadow: 0 6px 32px rgba(168, 85, 247, 0.55);
+        }
+
+        #tela-inicio,
+        #tela-fim {
+            position: absolute;
+            inset: 0;
+            background: rgba(2, 1, 10, 0.96);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 20;
+            text-align: center;
+            padding: 20px;
+        }
+
+        #tela-fim {
+            display: none;
+        }
+
+        #tela-inicio h1,
+        #tela-fim h1 {
+            font-size: 2.5rem;
+            margin-bottom: 12px;
+            -webkit-text-fill-color: unset;
+            background: none;
+            color: #e0f2fe;
+            filter: none;
+        }
+
+        #tela-inicio p,
+        #tela-fim p {
+            color: #94a3b8;
+            max-width: 520px;
+            line-height: 1.65;
+            margin-bottom: 16px;
+        }
+
+        .ctrl-box {
+            display: flex;
+            gap: 28px;
+            margin: 18px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .ctrl-box div {
+            background: #0f0a1e;
+            padding: 14px 22px;
+            border-radius: 12px;
+            border: 2px solid;
+        }
+
+        .ctrl-box .p1 {
+            border-color: #f97316;
+            box-shadow: 0 0 18px rgba(249, 115, 22, 0.3);
+        }
+
+        .ctrl-box .p2 {
+            border-color: #38bdf8;
+            box-shadow: 0 0 18px rgba(56, 189, 248, 0.3);
+        }
+
+        .ctrl-box strong {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 1.15rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="tela-inicio">
+        <h1>🚀 Naves do Espaço 🌌</h1>
+        <p>
+            Jogo cooperativo de naves no espaço!<br>
+            Destrua todos os inimigos da fase para avançar.<br>
+            Colete itens: 🔥 Tiro triplo · ❤️ Vida · 🛡️ Escudo · ⚡ Velocidade · 💣 Bomba
+        </p>
+        <div class="ctrl-box">
+            <div class="p1">
+                <strong style="color:#fdba74">🚀 NAVE 1</strong>
+                WASD — mover<br>
+                Espaço — atirar
+            </div>
+            <div class="p2">
+                <strong style="color:#7dd3fc">🚀 NAVE 2</strong>
+                Setas — mover<br>
+                Enter — atirar
+            </div>
+        </div>
+        <button class="btn" onclick="iniciar()">Jogar</button>
+    </div>
+
+    <div id="tela-fim">
+        <h1 id="titulo-fim">Vitória!</h1>
+        <p id="texto-fim"></p>
+        <button class="btn" onclick="reiniciar()">Jogar de Novo</button>
+    </div>
+
+    <h1>🚀 Naves do Espaço</h1>
+    <div id="ui">
+        <span class="fase">Fase: <b id="fase">1</b>/12</span>
+        <span class="p1">🚀1 ❤️<b id="vida1">3</b> | ⭐<b id="pts1">0</b> <span id="buff1"></span></span>
+        <span class="p2">🚀2 ❤️<b id="vida2">3</b> | ⭐<b id="pts2">0</b> <span id="buff2"></span></span>
+    </div>
+    <canvas id="c" width="960" height="540"></canvas>
+    <div id="msg"></div>
+    <div id="controles">
+        <b style="color:#fdba74">NAVE 1:</b> WASD + Espaço &nbsp;|&nbsp;
+        <b style="color:#7dd3fc">NAVE 2:</b> Setas + Enter &nbsp;|&nbsp;
+        R reinicia a fase
+    </div>
+
+    <script>
+        const canvas = document.getElementById('c');
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+
+        const teclas = {};
+        window.addEventListener('keydown', e => {
+            teclas[e.code] = true;
+            if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'Space', 'Enter'].includes(e.code)) e.preventDefault();
+            if (e.code === 'KeyR' && jogoAtivo) carregarFase(faseAtual);
+        });
+        window.addEventListener('keyup', e => teclas[e.code] = false);
+
+        let faseAtual = 0, jogoAtivo = false, msgTimer = null, tempo = 0;
+        let estrelas = [], particulas = [], tiros = [], inimigos = [], asteroides = [], powerups = [];
+        let waveTimer = 0;
+        let totalParaEliminar = 0;   // quantos precisam ser destruídos
+        let eliminados = 0;         // quantos já foram destruídos pelo jogador
+        let spawnados = 0;          // quantos já nasceram na fase
+        let avancandoFase = false;  // trava para não pular fases
+
+        const nave1 = { x: 200, y: 450, w: 36, h: 42, vida: 3, vidaMax: 5, pts: 0, cooldown: 0, power: 0, escudo: 0, velocidade: 0, lento: 0 };
+        const nave2 = { x: 700, y: 450, w: 36, h: 42, vida: 3, vidaMax: 5, pts: 0, cooldown: 0, power: 0, escudo: 0, velocidade: 0, lento: 0 };
+
+        const fases = [
+            { nome: "Setor Inicial", inimigos: 8, velocidade: 1.2, tipo: "basico" },
+            { nome: "Campo de Asteroides", inimigos: 10, velocidade: 1.4, tipo: "asteroides" },
+            { nome: "Invasão Alienígena", inimigos: 12, velocidade: 1.5, tipo: "basico" },
+            { nome: "Naves Rápidas", inimigos: 14, velocidade: 1.8, tipo: "rapido" },
+            { nome: "Campo Minado", inimigos: 12, velocidade: 1.6, tipo: "asteroides" },
+            { nome: "Frota Inimiga", inimigos: 16, velocidade: 1.7, tipo: "basico" },
+            { nome: "Tempestade Espacial", inimigos: 15, velocidade: 2.0, tipo: "misto" },
+            { nome: "Elite Alien", inimigos: 18, velocidade: 1.9, tipo: "rapido" },
+            { nome: "Cinturão Negro", inimigos: 16, velocidade: 2.1, tipo: "asteroides" },
+            { nome: "Guerra Galáctica", inimigos: 20, velocidade: 2.2, tipo: "misto" },
+            { nome: "Última Linha", inimigos: 22, velocidade: 2.4, tipo: "rapido" },
+            { nome: "Chefe Final", inimigos: 25, velocidade: 2.5, tipo: "chefe" }
+        ];
+
+        function criarEstrelas() {
+            estrelas = [];
+            for (let i = 0; i < 120; i++) {
+                estrelas.push({
+                    x: Math.random() * W,
+                    y: Math.random() * H,
+                    r: Math.random() * 1.8 + 0.3,
+                    v: Math.random() * 1.5 + 0.3,
+                    o: Math.random() * 0.7 + 0.3
+                });
+            }
+        }
+
+        function spawnParticula(x, y, cor, qtd = 10) {
+            for (let i = 0; i < qtd; i++) {
+                particulas.push({
+                    x, y,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    vida: 20 + Math.random() * 25,
+                    cor,
+                    r: 1.5 + Math.random() * 3
+                });
+            }
+        }
+
+        function spawnInimigo(tipo, vel) {
+            const x = 40 + Math.random() * (W - 80);
+            if (tipo === "asteroides" || (tipo === "misto" && Math.random() < 0.4)) {
+                asteroides.push({
+                    x, y: -40,
+                    r: 18 + Math.random() * 22,
+                    vx: (Math.random() - 0.5) * 1.5,
+                    vy: vel * (0.8 + Math.random() * 0.6),
+                    rot: 0,
+                    rotV: (Math.random() - 0.5) * 0.08
+                });
+            } else {
+                const isRapido = tipo === "rapido" || (tipo === "misto" && Math.random() < 0.3);
+                inimigos.push({
+                    x, y: -50,
+                    w: isRapido ? 28 : 34,
+                    h: isRapido ? 28 : 34,
+                    vx: (Math.random() - 0.5) * (isRapido ? 2.5 : 1.2),
+                    vy: vel * (isRapido ? 1.3 : 1),
+                    vida: tipo === "chefe" ? 3 : 1,
+                    tipo: isRapido ? "rapido" : "normal",
+                    tiroTimer: 40 + Math.random() * 60
+                });
+            }
+        }
+
+        function carregarFase(n) {
+            const f = fases[n];
+            inimigos = [];
+            asteroides = [];
+            tiros = [];
+            powerups = [];
+            particulas = [];
+            waveTimer = 0;
+            totalParaEliminar = f.inimigos;
+            eliminados = 0;
+            spawnados = 0;
+            avancandoFase = false;
+
+            nave1.x = 280; nave1.y = 460; nave1.cooldown = 0; nave1.power = 0; nave1.escudo = 0; nave1.velocidade = 0; nave1.lento = 0;
+            nave2.x = 640; nave2.y = 460; nave2.cooldown = 0; nave2.power = 0; nave2.escudo = 0; nave2.velocidade = 0; nave2.lento = 0;
+
+            // Spawn inicial (máx 4)
+            for (let i = 0; i < Math.min(4, f.inimigos); i++) {
+                spawnInimigo(f.tipo, f.velocidade);
+                spawnados++;
+            }
+
+            document.getElementById('fase').textContent = n + 1;
+            mostrarMsg('Fase ' + (n + 1) + ': ' + f.nome + ' — Elimine ' + totalParaEliminar + ' inimigos!');
+            criarEstrelas();
+            atualizarUI();
+        }
+
+        function mostrarMsg(t) {
+            const el = document.getElementById('msg');
+            el.textContent = t;
+            clearTimeout(msgTimer);
+            msgTimer = setTimeout(() => el.textContent = '', 2800);
+        }
+
+        function atualizarUI() {
+            document.getElementById('vida1').textContent = nave1.vida;
+            document.getElementById('vida2').textContent = nave2.vida;
+            document.getElementById('pts1').textContent = nave1.pts;
+            document.getElementById('pts2').textContent = nave2.pts;
+            // Buffs ativos
+            let b1 = '';
+            if (nave1.power > 0) b1 += '🔥';
+            if (nave1.escudo > 0) b1 += '🛡️';
+            if (nave1.velocidade > 0) b1 += '⚡';
+            document.getElementById('buff1').textContent = b1;
+            let b2 = '';
+            if (nave2.power > 0) b2 += '🔥';
+            if (nave2.escudo > 0) b2 += '🛡️';
+            if (nave2.velocidade > 0) b2 += '⚡';
+            document.getElementById('buff2').textContent = b2;
+        }
+
+        function iniciar() {
+            document.getElementById('tela-inicio').style.display = 'none';
+            document.getElementById('tela-fim').style.display = 'none';
+            faseAtual = 0;
+            nave1.vida = 3; nave1.pts = 0;
+            nave2.vida = 3; nave2.pts = 0;
+            carregarFase(0);
+            jogoAtivo = true;
+            requestAnimationFrame(loop);
+        }
+
+        function reiniciar() {
+            document.getElementById('tela-fim').style.display = 'none';
+            iniciar();
+        }
+
+        function colideRect(a, b) {
+            return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+        }
+
+        function colideCirculo(ax, ay, ar, bx, by, br) {
+            const dx = ax - bx, dy = ay - by;
+            return dx * dx + dy * dy < (ar + br) * (ar + br);
+        }
+
+        function atirar(nave, cor) {
+            if (nave.cooldown > 0 || nave.vida <= 0) return;
+            const power = nave.power > 0;
+            const dono = nave === nave1 ? 1 : 2;
+            // Tiro central
+            tiros.push({ x: nave.x + nave.w / 2 - 3, y: nave.y, w: 6, h: 14, vy: -11, cor, dono, power });
+            if (power) {
+                // Tiro triplo
+                tiros.push({ x: nave.x + 2, y: nave.y + 6, w: 5, h: 12, vy: -10, vx: -1.5, cor, dono, power: true });
+                tiros.push({ x: nave.x + nave.w - 7, y: nave.y + 6, w: 5, h: 12, vy: -10, vx: 1.5, cor, dono, power: true });
+                // Tiro extra se power forte
+                if (nave.power > 150) {
+                    tiros.push({ x: nave.x + nave.w / 2 - 3, y: nave.y - 8, w: 8, h: 16, vy: -13, cor: '#fbbf24', dono, power: true });
+                }
+            }
+            nave.cooldown = power ? 9 : 13;
+        }
+
+        function atualizarNave(nave, esq, dir, cima, baixo, tiroKey, cor) {
+            if (nave.vida <= 0) return;
+            let vel = 5.5;
+            if (nave.velocidade > 0) vel = 8.5;
+            if (nave.lento > 0) vel = 3;
+            if (teclas[esq]) nave.x -= vel;
+            if (teclas[dir]) nave.x += vel;
+            if (teclas[cima]) nave.y -= vel;
+            if (teclas[baixo]) nave.y += vel;
+            nave.x = Math.max(0, Math.min(W - nave.w, nave.x));
+            nave.y = Math.max(0, Math.min(H - nave.h - 10, nave.y));
+            if (nave.cooldown > 0) nave.cooldown--;
+            if (nave.power > 0) nave.power--;
+            if (nave.escudo > 0) nave.escudo--;
+            if (nave.velocidade > 0) nave.velocidade--;
+            if (nave.lento > 0) nave.lento--;
+            if (teclas[tiroKey]) atirar(nave, cor);
+        }
+
+        function atualizar() {
+            if (!jogoAtivo) return;
+            tempo++;
+
+            for (const e of estrelas) {
+                e.y += e.v;
+                if (e.y > H) { e.y = -5; e.x = Math.random() * W; }
+            }
+
+            atualizarNave(nave1, 'KeyA', 'KeyD', 'KeyW', 'KeyS', 'Space', '#f97316');
+            atualizarNave(nave2, 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter', '#38bdf8');
+
+            const f = fases[faseAtual];
+            waveTimer++;
+            // Continua spawnando até atingir o total da fase
+            if (waveTimer > 50 && spawnados < totalParaEliminar && inimigos.length + asteroides.length < 7) {
+                spawnInimigo(f.tipo, f.velocidade);
+                spawnados++;
+                waveTimer = 0;
+            }
+
+            for (let i = tiros.length - 1; i >= 0; i--) {
+                const t = tiros[i];
+                if (t.inimigo) continue;
+                t.y += t.vy;
+                if (t.vx) t.x += t.vx;
+                if (t.y < -20 || t.x < -20 || t.x > W + 20) { tiros.splice(i, 1); continue; }
+
+                for (let j = inimigos.length - 1; j >= 0; j--) {
+                    const inim = inimigos[j];
+                    if (colideRect(t, inim)) {
+                        inim.vida--;
+                        spawnParticula(t.x, t.y, t.cor, 6);
+                        tiros.splice(i, 1);
+                        if (inim.vida <= 0) {
+                            spawnParticula(inim.x + inim.w / 2, inim.y + inim.h / 2, '#f472b6', 14);
+                            const pts = inim.tipo === 'rapido' ? 150 : 100;
+                            if (t.dono === 1) nave1.pts += pts;
+                            else nave2.pts += pts;
+                            inimigos.splice(j, 1);
+                            eliminados++;
+                            // Drop de itens (25% chance)
+                            if (Math.random() < 0.25) {
+                                const tipos = ['power', 'vida', 'escudo', 'velocidade', 'bomba'];
+                                const tipo = tipos[Math.floor(Math.random() * tipos.length)];
+                                powerups.push({ x: inim.x + 8, y: inim.y, tipo, vy: 1.8 + Math.random() });
+                            }
+                        }
+                        break;
+                    }
+                }
+
+                for (let j = asteroides.length - 1; j >= 0; j--) {
+                    const a = asteroides[j];
+                    if (colideCirculo(t.x + 3, t.y + 7, 4, a.x, a.y, a.r)) {
+                        spawnParticula(a.x, a.y, '#94a3b8', 12);
+                        if (t.dono === 1) nave1.pts += 50;
+                        else nave2.pts += 50;
+                        asteroides.splice(j, 1);
+                        eliminados++;
+                        tiros.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+
+            for (let i = inimigos.length - 1; i >= 0; i--) {
+                const inim = inimigos[i];
+                inim.x += inim.vx;
+                inim.y += inim.vy;
+                if (inim.x < 10 || inim.x > W - inim.w - 10) inim.vx *= -1;
+                if (inim.y > H + 50) {
+                    // Saiu da tela sem ser destruído → permite spawn de outro
+                    inimigos.splice(i, 1);
+                    if (spawnados > eliminados) spawnados--;
+                    continue;
+                }
+
+                inim.tiroTimer--;
+                if (inim.tiroTimer <= 0 && inim.y > 30 && inim.y < H - 100) {
+                    tiros.push({
+                        x: inim.x + inim.w / 2 - 3,
+                        y: inim.y + inim.h,
+                        w: 5, h: 12,
+                        vy: 5.5,
+                        cor: '#f472b6',
+                        inimigo: true
+                    });
+                    inim.tiroTimer = 70 + Math.random() * 80;
+                }
+
+                for (const nave of [nave1, nave2]) {
+                    if (nave.vida > 0 && colideRect(inim, nave)) {
+                        if (nave.escudo > 0) {
+                            nave.escudo = 0;
+                            spawnParticula(nave.x + 18, nave.y + 20, '#38bdf8', 14);
+                            mostrarMsg('🛡️ Escudo absorveu o hit!');
+                        } else {
+                            nave.vida--;
+                            spawnParticula(nave.x + 18, nave.y + 20, '#ef4444', 16);
+                            if (nave.vida <= 0) mostrarMsg(nave === nave1 ? 'Nave 1 destruída!' : 'Nave 2 destruída!');
+                        }
+                        inimigos.splice(i, 1);
+                        eliminados++;
+                        atualizarUI();
+                        break;
+                    }
+                }
+            }
+
+            for (let i = asteroides.length - 1; i >= 0; i--) {
+                const a = asteroides[i];
+                a.x += a.vx;
+                a.y += a.vy;
+                a.rot += a.rotV;
+                if (a.y > H + 50) {
+                    asteroides.splice(i, 1);
+                    if (spawnados > eliminados) spawnados--;
+                    continue;
+                }
+
+                for (const nave of [nave1, nave2]) {
+                    if (nave.vida > 0 && colideCirculo(nave.x + 18, nave.y + 20, 16, a.x, a.y, a.r)) {
+                        if (nave.escudo > 0) {
+                            nave.escudo = 0;
+                            spawnParticula(nave.x + 18, nave.y + 20, '#38bdf8', 12);
+                            mostrarMsg('🛡️ Escudo absorveu o asteroide!');
+                        } else {
+                            nave.vida--;
+                            spawnParticula(nave.x + 18, nave.y + 20, '#ef4444', 14);
+                        }
+                        asteroides.splice(i, 1);
+                        eliminados++;
+                        atualizarUI();
+                        break;
+                    }
+                }
+            }
+
+            for (let i = tiros.length - 1; i >= 0; i--) {
+                const t = tiros[i];
+                if (!t.inimigo) continue;
+                t.y += t.vy;
+                if (t.y > H) { tiros.splice(i, 1); continue; }
+                for (const nave of [nave1, nave2]) {
+                    if (nave.vida > 0 && colideRect(t, nave)) {
+                        if (nave.escudo > 0) {
+                            nave.escudo = Math.max(0, nave.escudo - 80);
+                            spawnParticula(t.x, t.y, '#38bdf8', 6);
+                        } else {
+                            nave.vida--;
+                            spawnParticula(t.x, t.y, '#ef4444', 8);
+                            if (nave.vida <= 0) mostrarMsg(nave === nave1 ? 'Nave 1 destruída!' : 'Nave 2 destruída!');
+                        }
+                        tiros.splice(i, 1);
+                        atualizarUI();
+                        break;
+                    }
+                }
+            }
+
+            for (let i = powerups.length - 1; i >= 0; i--) {
+                const p = powerups[i];
+                p.y += p.vy;
+                if (p.y > H) { powerups.splice(i, 1); continue; }
+                for (const nave of [nave1, nave2]) {
+                    if (nave.vida > 0 && colideRect({ x: p.x, y: p.y, w: 22, h: 22 }, nave)) {
+                        const nome = nave === nave1 ? 'Nave 1' : 'Nave 2';
+                        if (p.tipo === 'power') {
+                            nave.power = 360;
+                            mostrarMsg(nome + ' 🔥 Tiro Triplo!');
+                            spawnParticula(p.x, p.y, '#f97316', 12);
+                        } else if (p.tipo === 'vida') {
+                            if (nave.vida < nave.vidaMax) {
+                                nave.vida++;
+                                mostrarMsg(nome + ' ❤️ Vida +1!');
+                            } else {
+                                nave.pts += 200;
+                                mostrarMsg(nome + ' ⭐ Bônus de pontos!');
+                            }
+                            spawnParticula(p.x, p.y, '#f87171', 12);
+                        } else if (p.tipo === 'escudo') {
+                            nave.escudo = 400;
+                            mostrarMsg(nome + ' 🛡️ Escudo ativado!');
+                            spawnParticula(p.x, p.y, '#38bdf8', 12);
+                        } else if (p.tipo === 'velocidade') {
+                            nave.velocidade = 350;
+                            mostrarMsg(nome + ' ⚡ Velocidade!');
+                            spawnParticula(p.x, p.y, '#fbbf24', 12);
+                        } else if (p.tipo === 'bomba') {
+                            // Explode todos inimigos próximos
+                            mostrarMsg(nome + ' 💣 Bomba!');
+                            for (let j = inimigos.length - 1; j >= 0; j--) {
+                                const inim = inimigos[j];
+                                spawnParticula(inim.x + 15, inim.y + 15, '#f472b6', 10);
+                                nave.pts += 80;
+                                inimigos.splice(j, 1);
+                                eliminados++;
+                            }
+                            for (let j = asteroides.length - 1; j >= 0; j--) {
+                                spawnParticula(asteroides[j].x, asteroides[j].y, '#94a3b8', 8);
+                                nave.pts += 40;
+                                asteroides.splice(j, 1);
+                                eliminados++;
+                            }
+                            spawnParticula(p.x, p.y, '#ef4444', 20);
+                        }
+                        powerups.splice(i, 1);
+                        atualizarUI();
+                        break;
+                    }
+                }
+            }
+
+            for (let i = particulas.length - 1; i >= 0; i--) {
+                const p = particulas[i];
+                p.x += p.vx; p.y += p.vy; p.vy += 0.08; p.vida--;
+                if (p.vida <= 0) particulas.splice(i, 1);
+            }
+
+            // Só avança quando o jogador eliminou TODOS os inimigos da fase
+            if (!avancandoFase && eliminados >= totalParaEliminar && inimigos.length === 0 && asteroides.length === 0) {
+                avancandoFase = true;
+                if (faseAtual < fases.length - 1) {
+                    mostrarMsg('✅ Fase ' + (faseAtual + 1) + ' completa!');
+                    setTimeout(() => {
+                        faseAtual++;
+                        carregarFase(faseAtual);
+                    }, 1500);
+                } else {
+                    fimDeJogo(true);
+                }
+            }
+
+            if (nave1.vida <= 0 && nave2.vida <= 0) {
+                fimDeJogo(false);
+            }
+        }
+
+        function fimDeJogo(vitoria) {
+            jogoAtivo = false;
+            document.getElementById('titulo-fim').textContent = vitoria ? 'Vocês Salvaram a Galáxia!' : 'Game Over';
+            document.getElementById('texto-fim').textContent = vitoria
+                ? 'Incrível! Completaram as ' + fases.length + ' fases!\nPontos: Nave1 ' + nave1.pts + ' · Nave2 ' + nave2.pts
+                : 'Pontos finais: Nave1 ' + nave1.pts + ' · Nave2 ' + nave2.pts + '\nTente novamente!';
+            document.getElementById('tela-fim').style.display = 'flex';
+        }
+
+        function desenharNave(nave, corPrincipal, corSec) {
+            if (nave.vida <= 0) return;
+            const px = nave.x + nave.w / 2;
+            const py = nave.y;
+
+            ctx.fillStyle = tempo % 6 < 3 ? '#fbbf24' : '#f97316';
+            ctx.beginPath();
+            ctx.moveTo(px - 6, py + nave.h - 4);
+            ctx.lineTo(px, py + nave.h + 10 + Math.sin(tempo * 0.5) * 3);
+            ctx.lineTo(px + 6, py + nave.h - 4);
+            ctx.fill();
+
+            ctx.fillStyle = corPrincipal;
+            ctx.beginPath();
+            ctx.moveTo(px, py);
+            ctx.lineTo(px + 16, py + 28);
+            ctx.lineTo(px + 10, py + 36);
+            ctx.lineTo(px - 10, py + 36);
+            ctx.lineTo(px - 16, py + 28);
+            ctx.closePath();
+            ctx.fill();
+            ctx.strokeStyle = '#000';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.fillStyle = corSec;
+            ctx.beginPath();
+            ctx.ellipse(px, py + 16, 7, 9, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            ctx.fillStyle = corPrincipal;
+            ctx.beginPath();
+            ctx.moveTo(px - 14, py + 22);
+            ctx.lineTo(px - 26, py + 34);
+            ctx.lineTo(px - 10, py + 30);
+            ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(px + 14, py + 22);
+            ctx.lineTo(px + 26, py + 34);
+            ctx.lineTo(px + 10, py + 30);
+            ctx.fill();
+
+            // Power glow
+            if (nave.power > 0) {
+                ctx.strokeStyle = '#f97316';
+                ctx.lineWidth = 2;
+                ctx.globalAlpha = 0.5 + Math.sin(tempo * 0.25) * 0.3;
+                ctx.beginPath();
+                ctx.arc(px, py + 18, 24, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+            }
+            // Escudo
+            if (nave.escudo > 0) {
+                ctx.strokeStyle = '#38bdf8';
+                ctx.lineWidth = 3;
+                ctx.globalAlpha = 0.4 + Math.sin(tempo * 0.15) * 0.25;
+                ctx.beginPath();
+                ctx.arc(px, py + 18, 28, 0, Math.PI * 2);
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+            }
+            // Velocidade trail
+            if (nave.velocidade > 0) {
+                ctx.fillStyle = 'rgba(251,191,36,0.4)';
+                ctx.beginPath();
+                ctx.moveTo(px - 8, py + nave.h);
+                ctx.lineTo(px, py + nave.h + 16);
+                ctx.lineTo(px + 8, py + nave.h);
+                ctx.fill();
+            }
+        }
+
+        function desenhar() {
+            ctx.fillStyle = '#02010a';
+            ctx.fillRect(0, 0, W, H);
+
+            const neb = ctx.createRadialGradient(W * 0.3, H * 0.2, 10, W * 0.3, H * 0.2, 280);
+            neb.addColorStop(0, 'rgba(124,58,237,0.12)');
+            neb.addColorStop(1, 'transparent');
+            ctx.fillStyle = neb;
+            ctx.fillRect(0, 0, W, H);
+
+            const neb2 = ctx.createRadialGradient(W * 0.75, H * 0.6, 10, W * 0.75, H * 0.6, 220);
+            neb2.addColorStop(0, 'rgba(14,165,233,0.1)');
+            neb2.addColorStop(1, 'transparent');
+            ctx.fillStyle = neb2;
+            ctx.fillRect(0, 0, W, H);
+
+            for (const e of estrelas) {
+                ctx.globalAlpha = e.o;
+                ctx.fillStyle = '#e0f2fe';
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, e.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+
+            for (const a of asteroides) {
+                ctx.save();
+                ctx.translate(a.x, a.y);
+                ctx.rotate(a.rot);
+                ctx.fillStyle = '#64748b';
+                ctx.beginPath();
+                ctx.moveTo(0, -a.r);
+                for (let i = 0; i < 7; i++) {
+                    const ang = (i / 7) * Math.PI * 2;
+                    const rr = a.r * (0.7 + Math.sin(i * 2.3) * 0.25);
+                    ctx.lineTo(Math.cos(ang) * rr, Math.sin(ang) * rr);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#94a3b8';
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                ctx.restore();
+            }
+
+            for (const inim of inimigos) {
+                const px = inim.x + inim.w / 2;
+                ctx.fillStyle = inim.tipo === 'rapido' ? '#f472b6' : '#c026d3';
+                ctx.beginPath();
+                ctx.moveTo(px, inim.y + inim.h);
+                ctx.lineTo(px + 14, inim.y + 8);
+                ctx.lineTo(px + 8, inim.y);
+                ctx.lineTo(px - 8, inim.y);
+                ctx.lineTo(px - 14, inim.y + 8);
+                ctx.closePath();
+                ctx.fill();
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 1.2;
+                ctx.stroke();
+                ctx.fillStyle = '#fef08a';
+                ctx.beginPath();
+                ctx.arc(px, inim.y + 12, 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.fillStyle = '#000';
+                ctx.beginPath();
+                ctx.arc(px, inim.y + 13, 2.5, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            for (const t of tiros) {
+                ctx.fillStyle = t.cor;
+                ctx.shadowColor = t.cor;
+                ctx.shadowBlur = 8;
+                ctx.fillRect(t.x, t.y, t.w, t.h);
+                ctx.shadowBlur = 0;
+            }
+
+            for (const p of powerups) {
+                const cores = {
+                    power: '#f97316',
+                    vida: '#f87171',
+                    escudo: '#38bdf8',
+                    velocidade: '#fbbf24',
+                    bomba: '#a855f7'
+                };
+                const icones = {
+                    power: '🔥',
+                    vida: '❤️',
+                    escudo: '🛡️',
+                    velocidade: '⚡',
+                    bomba: '💣'
+                };
+                const cor = cores[p.tipo] || '#4ade80';
+                // Brilho
+                ctx.shadowColor = cor;
+                ctx.shadowBlur = 12;
+                ctx.fillStyle = cor;
+                ctx.beginPath();
+                ctx.arc(p.x + 11, p.y + 11, 12, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.shadowBlur = 0;
+                ctx.fillStyle = '#fff';
+                ctx.font = '14px serif';
+                ctx.textAlign = 'center';
+                ctx.fillText(icones[p.tipo] || '?', p.x + 11, p.y + 16);
+                ctx.textAlign = 'left';
+            }
+
+            for (const p of particulas) {
+                ctx.globalAlpha = Math.max(0, p.vida / 35);
+                ctx.fillStyle = p.cor;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            ctx.globalAlpha = 1;
+
+            desenharNave(nave1, '#f97316', '#fdba74');
+            desenharNave(nave2, '#38bdf8', '#7dd3fc');
+
+            ctx.fillStyle = 'rgba(15,10,30,0.75)';
+            ctx.fillRect(W / 2 - 90, 8, 180, 26);
+            ctx.fillStyle = '#c4b5fd';
+            ctx.font = 'bold 13px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Eliminados: ' + eliminados + ' / ' + totalParaEliminar, W / 2, 26);
+            ctx.textAlign = 'left';
+        }
+
+        function loop() {
+            atualizar();
+            desenhar();
+            if (jogoAtivo) requestAnimationFrame(loop);
+        }
+
+        ctx.fillStyle = '#02010a';
+        ctx.fillRect(0, 0, W, H);
+        criarEstrelas();
+    </script>
+</body>
+
+</html>
+Fireboy & Watergirl Friv Style Game - Grok
